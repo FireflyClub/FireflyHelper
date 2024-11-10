@@ -3,6 +3,7 @@
 #![allow(non_snake_case)]
 
 mod util;
+mod marshal;
 mod interceptor;
 mod modules;
 
@@ -14,7 +15,9 @@ use windows::Win32::Foundation::HINSTANCE;
 use windows::Win32::System::Console;
 use windows::Win32::System::SystemServices::DLL_PROCESS_ATTACH;
 use winapi::um::processthreadsapi::{GetCurrentThread, TerminateThread};
-use crate::modules::{MhyContext, ModuleManager, Mhypbase, SdkUtil};
+use crate::modules::{MhyContext, ModuleManager, Http, Mhypbase, SdkUtil};
+
+pub static mut STRING_ADDR: Option<*mut u8> = None;
 
 #[no_mangle]
 #[allow(non_snake_case, unused_variables)]
@@ -49,6 +52,16 @@ unsafe fn thread_func() {
     // Init module manager
     let mut module_manager = MODULE_MANAGER.write().unwrap();
 
+    // Init pattern scanner
+    // STRING_ADDR = util::pattern_scan(base_ga, "48 C7 C2 ? ? ? ? 48 FF C2 80 3C 11 ? 75 ? E9 ? ? ? ?", 0);
+    STRING_ADDR = Some((base_ga + 0x0028A160) as *mut u8);
+
+    // Enable HttpRedirect
+    println!("Enabling WebRequestRedirect...");
+    // let web_req_addr = util::pattern_scan(base_ga, "48 89 5C 24 ? 57 48 83 EC 20 80 3D ? ? ? ? ? 48 8B FA 48 8B D9 75 11 B9 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8B CB FF 15 ? ? ? ? 84 C0 74 4F 48 8B D7 48 8B CB FF 15 ? ? ? ? 85 C0 75 0B 48 8B 5C 24 ? 48 83 C4 20 5F C3 8B C8", 1);
+    module_manager.enable(MhyContext::<Http>::new(Some((base_ga + 0x01F3F500) as *mut u8)));
+    println!("WebRequest Redirect enabled!");
+
     // Disable MhyPBase
     println!("Disabling Mhypbase...");
     let anti_cheat_init_addr = util::pattern_scan(base_up, "55 41 56 56 57 53 48 81 EC 00 01 00 00 48 8D AC 24 80 00 00 00 C7 45 7C 00 00 00 00", 0);
@@ -60,10 +73,9 @@ unsafe fn thread_func() {
 
     // Disable RSAEncryption
     println!("Disabling RSAEncryption...");
-    // TODO: Devide pattern num by version
-    let mihoyo_sdk_util_addr = util::pattern_scan(base_ga, "48 89 ? ? ? 48 89 ? ? ? 57 48 81 ? ? ? ? ? 80 ? ? ? ? ? ? 48 8B EA 48 8B F1 75 ? B9 ? ? ? ?", 0);
-    module_manager.enable(MhyContext::<SdkUtil>::new(mihoyo_sdk_util_addr));
-    println!("MihoyoSdkUtil: {:?}", mihoyo_sdk_util_addr);
+    // let mihoyo_sdk_util_addr = util::pattern_scan(base_ga, "48 89 6C 24 ? 48 89 74 24 ? 57 48 81 EC ? ? ? ? 80 3D ? ? ? ? ? 48 8B EA 48 8B F1 75 11 B9 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8B 0D ? ? ? ? 48 89 9C 24 ? ? ? ? E8 ? ? ? ? 48 8B C8 48 8B F8 E8 ? ? ? ? 48 85 FF 0F 84 ? ? ? ? 80 3D ? ? ? ? ? 75 11", 0);
+    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x1935530) as *mut u8)));
+    println!("MihoyoSdkUtil disabled!");
 
     println!("Successfully injected!");
 }

@@ -12,7 +12,6 @@ impl Interceptor {
         Self { hooks: Vec::new() }
     }
 
-    #[allow(dead_code)]
     pub unsafe fn attach(&mut self, addr: usize, routine: JmpBackRoutine) -> Result<()> {
         let hooker = Hooker::new(
             addr,

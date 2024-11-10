@@ -3,6 +3,8 @@ use anyhow::Result;
 
 use crate::interceptor::Interceptor;
 
+mod http;
+pub use http::Http;
 mod mhypbase;
 pub use mhypbase::Mhypbase;
 mod sdkutil;
@@ -26,7 +28,7 @@ impl ModuleManager {
 
 #[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub enum ModuleType {
-    Mhypbase, SdkUtil
+    Http, Mhypbase, SdkUtil
 }
 
 pub trait MhyModule {
