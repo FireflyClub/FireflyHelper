@@ -54,12 +54,12 @@ unsafe fn thread_func() {
 
     // Init pattern scanner
     // 48 C7 C2 ? ? ? ? 48 FF C2 80 3C 11 ? 75 ? E9 ? ? ? ? INDEX0
-    STRING_ADDR = Some((base_ga + 0x00B31160) as *mut u8);
+    STRING_ADDR = Some((base_ga + 0x002E0AB0) as *mut u8);
 
     // Enable HttpRedirect
     println!("Enabling WebRequestRedirect...");
     // 48 89 5C 24 ? 57 48 83 EC 20 80 3D ? ? ? ? ? 48 8B FA 48 8B D9 75 11 B9 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8B CB FF 15 ? ? ? ? 84 C0 74 4F 48 8B D7 48 8B CB FF 15 ? ? ? ? 85 C0 75 0B 48 8B 5C 24 ? 48 83 C4 20 5F C3 8B C8" INDEX1
-    module_manager.enable(MhyContext::<Http>::new(Some((base_ga + 0x07C476D0) as *mut u8)));
+    module_manager.enable(MhyContext::<Http>::new(Some((base_ga + 0x02A63DF0) as *mut u8)));
     println!("WebRequest Redirect enabled!");
 
     // Disable Mhypbase
@@ -74,8 +74,8 @@ unsafe fn thread_func() {
     // Disable MhySdkUtil
     println!("Disabling MhySdkUtil...");
     // 48 89 6C 24 ? 48 89 74 24 ? 57 48 81 EC ? ? ? ? 80 3D ? ? ? ? ? 48 8B EA 48 8B F1 75 11 B9 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8B 0D ? ? ? ? 48 89 9C 24 ? ? ? ? E8 ? ? ? ? 48 8B C8 48 8B F8 E8 ? ? ? ? 48 85 FF 0F 84 ? ? ? ? 80 3D ? ? ? ? ? 75 11
-    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x06B1B090) as *mut u8)));
-    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x0715AA70) as *mut u8)));
+    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x01BA0430) as *mut u8)));
+    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x02013BF0) as *mut u8)));
     println!("MhySdkUtil disabled!");
 
     println!("Successfully injected!");
