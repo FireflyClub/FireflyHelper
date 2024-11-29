@@ -9,6 +9,8 @@ mod mhypbase;
 pub use mhypbase::Mhypbase;
 mod sdkutil;
 pub use sdkutil::SdkUtil;
+mod disable_censorship;
+pub use disable_censorship::DisableCensorship;
 
 #[derive(Default)]
 pub struct ModuleManager {
@@ -28,7 +30,7 @@ impl ModuleManager {
 
 #[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub enum ModuleType {
-    Http, Mhypbase, SdkUtil
+    Http, Mhypbase, SdkUtil, DisableCensorship
 }
 
 pub trait MhyModule {

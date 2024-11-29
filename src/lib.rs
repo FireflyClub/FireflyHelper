@@ -15,7 +15,7 @@ use windows::Win32::Foundation::HINSTANCE;
 use windows::Win32::System::Console;
 use windows::Win32::System::SystemServices::DLL_PROCESS_ATTACH;
 use winapi::um::processthreadsapi::{GetCurrentThread, TerminateThread};
-use crate::modules::{MhyContext, ModuleManager, Http, Mhypbase, SdkUtil};
+use crate::modules::{MhyContext, ModuleManager, Http, Mhypbase, SdkUtil, DisableCensorship};
 
 pub static mut STRING_ADDR: Option<*mut u8> = None;
 
@@ -77,6 +77,19 @@ unsafe fn thread_func() {
     module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x01BA0430) as *mut u8)));
     module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x02013BF0) as *mut u8)));
     println!("MhySdkUtil disabled!");
+
+    // Disable DisableCensorship
+    println!("Disabling DisableCensorship...");
+    // 40 53 48 83 EC 30 80 3D ? ? ? ? ? 48 8B D9 0F 29 74 24 ? 0F 28 F1 75 44 80 79 33 00 74 33 F3 0F 10 0D ? ? ? ? 0F 57 C0 F3 0F 5F C6 F3 0F 5D C8 F3 0F 11 49 ? 41 B8 ? ? ? ? F3 0F 59 49 ? E8 ? ? ? ? 84 C0 75 07 C7 43 ? ? ? ? ? 0F 28 74 24
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x002EF9D40) as *mut u8)));
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x002EFA080) as *mut u8)));
+
+    // 48 89 5C 24 ? 57 48 83 EC 30 80 3D ? ? ? ? ? 41 8B F8 0F 29 74 24 ? 48 8B D9 0F 28 F1 75 2E 80 79 33 00 74 18 F3 0F 10 0D
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x002EF9FF0) as *mut u8)));
+
+    // 48 89 5C 24 ? 57 48 83 EC 70 80 3D ? ? ? ? ? 48 8B D9 0F 29 74 24 ? 0F 28 F2 0F 29 7C 24
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x002EF9DD0) as *mut u8)));
+    println!("DisableCensorship disabled!");
 
     println!("Successfully injected!");
 }

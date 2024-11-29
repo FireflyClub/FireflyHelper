@@ -30,6 +30,10 @@ impl MhyModule for MhyContext<Http> {
 
 unsafe extern "win64" fn hkaddr(reg: *mut Registers, _: usize) {
     let url = marshal::read_csharp_string((*reg).rdx);
+    
+    if url.to_lowercase().contains("watermark") {
+        return;
+    }
 
     let mut new_url = String::from("http://127.0.0.1:619");
     url.split('/').skip(3).for_each(|s| {
