@@ -54,12 +54,12 @@ unsafe fn thread_func() {
 
     // Init pattern scanner
     // 48 C7 C2 ? ? ? ? 48 FF C2 80 3C 11 ? 75 ? E9 ? ? ? ?
-    STRING_ADDR = Some((base_ga + 0x00BC9970) as *mut u8);
+    STRING_ADDR = Some((base_ga + 0x00BCA4D0) as *mut u8);
 
     // Enable HttpRedirect
     println!("Enabling WebRequestRedirect...");
     // 48 89 5C 24 ? 57 48 83 EC 20 80 3D ? ? ? ? ? 48 8B FA 48 8B D9 75 11 B9 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8B CB FF 15 ? ? ? ? 84 C0 74 4F 48 8B D7 48 8B CB FF 15 ? ? ? ? 85 C0 75 0B 48 8B 5C 24 ? 48 83 C4 20 5F C3 8B C8 INDEX1
-    module_manager.enable(MhyContext::<Http>::new(Some((base_ga + 0x08440620) as *mut u8)));
+    module_manager.enable(MhyContext::<Http>::new(Some((base_ga + 0x084429F0) as *mut u8)));
     println!("WebRequest Redirect enabled!");
 
     // Disable Mhypbase
@@ -74,21 +74,21 @@ unsafe fn thread_func() {
     // Disable MhySdkUtil
     println!("Disabling MhySdkUtil...");
     // 48 89 6C 24 ? 48 89 74 24 ? 57 48 81 EC ? ? ? ? 80 3D ? ? ? ? ? 48 8B EA 48 8B F1 75 11 B9 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8B 0D ? ? ? ? 48 89 9C 24 ? ? ? ? E8 ? ? ? ? 48 8B C8 48 8B F8 E8 ? ? ? ? 48 85 FF 0F 84 ? ? ? ? 80 3D ? ? ? ? ? 75 11
-    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x0732EBA0) as *mut u8)));
-    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x079255B0) as *mut u8)));
+    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x0732F210) as *mut u8)));
+    module_manager.enable(MhyContext::<SdkUtil>::new(Some((base_ga + 0x07927D50) as *mut u8)));
     println!("MhySdkUtil disabled!");
 
     // Disable DisableCensorship
     println!("Disabling DisableCensorship...");
     // 40 53 48 83 EC 30 80 3D ? ? ? ? ? 48 8B D9 0F 29 74 24 ? 0F 28 F1 75 44 80 79 33 00 74 33 F3 0F 10 0D ? ? ? ? 0F 57 C0 F3 0F 5F C6 F3 0F 5D C8 F3 0F 11 49 ? 41 B8 ? ? ? ? F3 0F 59 49 ? E8 ? ? ? ? 84 C0 75 07 C7 43 ? ? ? ? ? 0F 28 74 24
-    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x0118B1F0) as *mut u8)));
-    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x0118B540) as *mut u8)));
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x01189D00) as *mut u8)));
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x0118A050) as *mut u8)));
 
     // 48 89 5C 24 ? 57 48 83 EC 30 80 3D ? ? ? ? ? 41 8B F8 0F 29 74 24 ? 48 8B D9 0F 28 F1 75 2E 80 79 33 00 74 18 F3 0F 10 0D
-    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x0118B4B0) as *mut u8)));
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x01189FC0) as *mut u8)));
 
     // 48 89 5C 24 ? 57 48 83 EC 70 80 3D ? ? ? ? ? 48 8B D9 0F 29 74 24 ? 0F 28 F2 0F 29 7C 24
-    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x0118B280) as *mut u8)));
+    module_manager.enable(MhyContext::<DisableCensorship>::new(Some((base_ga + 0x01189D90) as *mut u8)));
     println!("DisableCensorship disabled!");
 
     println!("Successfully injected!");
