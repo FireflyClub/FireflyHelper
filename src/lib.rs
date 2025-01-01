@@ -56,11 +56,11 @@ unsafe fn thread_func() {
     // 48 C7 C2 ? ? ? ? 48 FF C2 80 3C 11 ? 75 ? E9 ? ? ? ?
     STRING_ADDR = Some((base_ga + 0x00BCA4D0) as *mut u8);
 
-    // Enable HttpRedirect
-    println!("Enabling WebRequestRedirect...");
-    // 48 89 5C 24 ? 57 48 83 EC 20 80 3D ? ? ? ? ? 48 8B FA 48 8B D9 75 11 B9 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8B CB FF 15 ? ? ? ? 84 C0 74 4F 48 8B D7 48 8B CB FF 15 ? ? ? ? 85 C0 75 0B 48 8B 5C 24 ? 48 83 C4 20 5F C3 8B C8 INDEX1
-    module_manager.enable(MhyContext::<Http>::new(Some((base_ga + 0x084429F0) as *mut u8)));
-    println!("WebRequest Redirect enabled!");
+    // Enable WebReqInitUrl
+    println!("Enabling WebReqInitUrl...");
+    // 48 89 4C 24 ?? 53 56 57 41 56 41 57 48 83 EC ?? 48 C7 44 24 ?? ?? ?? ?? ?? 48 8B FA 48 8B D9 80 3D ?? ?? ?? ?? ?? 75 ?? B9 ?? ?? ?? ?? E8 ?? ?? ?? ?? C6 05 ?? ?? ?? ?? ?? 48 8B CB
+    module_manager.enable(MhyContext::<Http>::new(Some((base_ga + 0x08445EA0) as *mut u8)));
+    println!("WebReqInitUrl enabled!");
 
     // Disable Mhypbase
     println!("Disabling Mhypbase...");

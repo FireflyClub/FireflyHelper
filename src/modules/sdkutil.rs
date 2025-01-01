@@ -12,7 +12,7 @@ impl MhyModule for MhyContext<SdkUtil> {
                 hkaddr,
             )
         } else {
-            Err(anyhow::anyhow!("Cannot find SdkUtil address."))
+            Err(anyhow::anyhow!("Cannot find address."))
         }
     }
 

@@ -14,7 +14,7 @@ impl MhyModule for MhyContext<DisableCensorship> {
             hkaddr(addr);
             Ok(())
         } else {
-            Err(anyhow::anyhow!("Cannot find DisableCensorship address."))
+            Err(anyhow::anyhow!("Cannot find address."))
         }
     }
 

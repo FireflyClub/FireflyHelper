@@ -12,7 +12,7 @@ impl MhyModule for MhyContext<Mhypbase> {
                 hkaddr,
             )
         } else {
-            Err(anyhow::anyhow!("Cannot find Mhypbase address."))
+            Err(anyhow::anyhow!("Cannot find address."))
         }
     }
 
