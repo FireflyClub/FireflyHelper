@@ -2,14 +2,12 @@ use std::ffi::CString;
 use anyhow::Result;
 use ilhook::x64::Registers;
 
+use crate::URL;
 use crate::modules::{MhyContext, MhyModule, ModuleType};
-use crate::marshal;
+use crate::marshal::{ptr_to_ansi, read_cstr};
 
-pub struct Http;
-
-const URL: &str = "http://127.0.0.1:619";
-
-impl MhyModule for MhyContext<Http> {
+pub struct MakeInitialUrl;
+impl MhyModule for MhyContext<MakeInitialUrl> {
     unsafe fn init(&mut self) -> Result<()> {
         if let Some(addr) = self.addr {
             self.interceptor.attach(
@@ -21,17 +19,13 @@ impl MhyModule for MhyContext<Http> {
         }
     }
 
-    unsafe fn de_init(&mut self) -> Result<()> {
-        Ok(())
-    }
-
     fn get_module_type(&self) -> super::ModuleType {
-        ModuleType::Http
+        ModuleType::MakeInitialUrl
     }
 }
 
 unsafe extern "win64" fn hkaddr(reg: *mut Registers, _: usize) {
-    let url = marshal::read_csharp_string((*reg).rcx);
+    let url = read_cstr((*reg).rcx);
 
     let mut new_url = match url.as_str() {
         s if ((s.contains("mihoyo.com")
@@ -55,5 +49,5 @@ unsafe extern "win64" fn hkaddr(reg: *mut Registers, _: usize) {
 
     println!("\"{url}\" => {new_url}");
     (*reg).rcx =
-        marshal::ptr_to_string_ansi(CString::new(new_url.as_str()).unwrap().as_c_str()) as u64;
+        ptr_to_ansi(CString::new(new_url.as_str()).unwrap().as_c_str()) as u64;
 }

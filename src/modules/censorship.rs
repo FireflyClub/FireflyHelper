@@ -6,9 +6,8 @@ use windows::Win32::System::Memory::{
 
 use crate::modules::{MhyContext, MhyModule, ModuleType};
 
-pub struct DisableCensorship;
-
-impl MhyModule for MhyContext<DisableCensorship> {
+pub struct Censorship;
+impl MhyModule for MhyContext<Censorship> {
     unsafe fn init(&mut self) -> Result<()> {
         if let Some(addr) = self.addr {
             hkaddr(addr);
@@ -18,12 +17,8 @@ impl MhyModule for MhyContext<DisableCensorship> {
         }
     }
 
-    unsafe fn de_init(&mut self) -> Result<()> {
-        Ok(())
-    }
-
     fn get_module_type(&self) -> super::ModuleType {
-        ModuleType::DisableCensorship
+        ModuleType::Censorship
     }
 }
 

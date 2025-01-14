@@ -3,14 +3,12 @@ use anyhow::Result;
 
 use crate::interceptor::Interceptor;
 
-mod http;
-pub use http::Http;
-mod mhypbase;
-pub use mhypbase::Mhypbase;
-mod sdkutil;
-pub use sdkutil::SdkUtil;
-mod disable_censorship;
-pub use disable_censorship::DisableCensorship;
+mod censorship;
+pub use censorship::Censorship;
+mod rsa;
+pub use rsa::RSAEncrypt;
+mod url;
+pub use url::MakeInitialUrl;
 
 #[derive(Default)]
 pub struct ModuleManager {
@@ -30,12 +28,11 @@ impl ModuleManager {
 
 #[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub enum ModuleType {
-    Http, Mhypbase, SdkUtil, DisableCensorship
+    MakeInitialUrl, RSAEncrypt, Censorship
 }
 
 pub trait MhyModule {
     unsafe fn init(&mut self) -> Result<()>;
-    #[allow(dead_code)] unsafe fn de_init(&mut self) -> Result<()>;
     fn get_module_type(&self) -> ModuleType;
 }
 
