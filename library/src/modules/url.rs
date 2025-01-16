@@ -4,10 +4,10 @@ use ilhook::x64::Registers;
 
 use crate::URL;
 use crate::modules::{MhyContext, MhyModule, ModuleType};
-use crate::marshal::{ptr_to_ansi, read_cstr};
+use crate::marshal::{ptr_to_ansi, read_il2cpp_str};
 
-pub struct MakeInitialUrl;
-impl MhyModule for MhyContext<MakeInitialUrl> {
+pub struct SetUrl;
+impl MhyModule for MhyContext<SetUrl> {
     unsafe fn init(&mut self) -> Result<()> {
         if let Some(addr) = self.addr {
             self.interceptor.attach(
@@ -20,12 +20,12 @@ impl MhyModule for MhyContext<MakeInitialUrl> {
     }
 
     fn get_module_type(&self) -> super::ModuleType {
-        ModuleType::MakeInitialUrl
+        ModuleType::SetUrl
     }
 }
 
 unsafe extern "win64" fn hkaddr(reg: *mut Registers, _: usize) {
-    let url = read_cstr((*reg).rcx);
+    let url = read_il2cpp_str((*reg).rcx);
 
     let mut new_url = match url.as_str() {
         s if ((s.contains("mihoyo.com")

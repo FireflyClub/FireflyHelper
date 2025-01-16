@@ -9,9 +9,9 @@ use lazy_static::lazy_static;
 use windows::Win32::Foundation::HINSTANCE;
 use windows::Win32::System::Console;
 use windows::Win32::System::SystemServices::DLL_PROCESS_ATTACH;
-use winapi::um::processthreadsapi::{GetCurrentThread, TerminateThread};
 
-use crate::modules::{MhyContext, ModuleManager, MakeInitialUrl, RSAEncrypt, Censorship};
+#[allow(unused_imports)]
+use crate::modules::{MhyContext, ModuleManager, SetUrl, RSAEncrypt, Censorship};
 use crate::marshal::STRING_ADDR;
 
 mod util;
@@ -20,15 +20,6 @@ mod interceptor;
 mod modules;
 
 pub const URL: &str = "http://127.0.0.1:619";
-
-#[no_mangle]
-#[allow(non_snake_case, unused_variables)]
-extern "cdecl" fn Initialize() -> bool {
-    thread::sleep(Duration::from_secs(2));
-    let thread = unsafe { GetCurrentThread() };
-    unsafe { TerminateThread(thread, 0) };
-    false
-}
 
 unsafe fn thread_func() {
     Console::AllocConsole().unwrap_or(());
@@ -50,15 +41,18 @@ unsafe fn thread_func() {
     // void jmp to 55 41 57 41 56 41 54 56 57 53 48 83 EC 50 48 8D 6C 24 ? 48 C7 45 ? ? ? ? ? 48 89 C8
     STRING_ADDR = Some((base_ga + 0x000D4500) as *mut u8);
 
+    // Enable InternalSetUrl
+    // 56 57 48 83 EC 28 48 89 D6 48 89 CF 80 3D ? ? ? ? ? 74 ? 48 89 F9 FF 15 ? ? ? ? 84 C0 74 ? 48 89 F9 48 89 F2 FF 15 ? ? ? ? 85 C0 75 ? 48 83 C4 28 5F 5E C3 B9 12
+    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x070EAF30) as *mut u8)));
+
     // Enable MakeInitialUrl
     // 55 41 56 56 57 53 48 83 EC 70 48 8D 6C 24 ? 48 C7 45 ? ? ? ? ? 48 89 D6 48 89 CF 80 3D ? ? ? ? ? 74
-    module_manager.enable(MhyContext::<MakeInitialUrl>::new(Some((base_ga + 0x070EABD0) as *mut u8)));
-    println!("MakeInitialUrl enabled!");
+    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x070EABD0) as *mut u8)));
+    println!("SetUrl enabled!");
 
     // Disable RSAEncrypt
     // 55 41 57 41 56 41 54 56 57 53 48 83 EC 50 48 8D 6C 24 ? 48 C7 45
     // module_manager.enable(MhyContext::<RSAEncrypt>::new(Some((base_ga + 0x0632F250) as *mut u8)));
-
     // println!("RSAEncrypt disabled!");
 
     // Disable SetElevationDitherAlphaValue | SetDistanceDitherAlphaValue

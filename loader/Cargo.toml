@@ -1,0 +1,12 @@
+[package]
+name = "loader"
+version = "1.0.0"
+edition = "2021"
+
+[[bin]]
+name = "loader"
+path = "main.rs"
+
+[dependencies]
+winapi = { version = "0.3.9", features = [ "windef", "winnt", "libloaderapi", "processthreadsapi", "memoryapi", "tlhelp32", "handleapi" ] }
+thiserror = "2.0.11"

@@ -8,7 +8,7 @@ pub use censorship::Censorship;
 mod rsa;
 pub use rsa::RSAEncrypt;
 mod url;
-pub use url::MakeInitialUrl;
+pub use url::SetUrl;
 
 #[derive(Default)]
 pub struct ModuleManager {
@@ -28,7 +28,7 @@ impl ModuleManager {
 
 #[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub enum ModuleType {
-    MakeInitialUrl, RSAEncrypt, Censorship
+    SetUrl, RSAEncrypt, Censorship
 }
 
 pub trait MhyModule {
