@@ -9,6 +9,8 @@ mod rsa;
 pub use rsa::RSAEncrypt;
 mod url;
 pub use url::SetUrl;
+mod res;
+pub use res::RES;
 
 #[derive(Default)]
 pub struct ModuleManager {
@@ -28,7 +30,7 @@ impl ModuleManager {
 
 #[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub enum ModuleType {
-    SetUrl, RSAEncrypt, Censorship
+    SetUrl, RSAEncrypt, Censorship, RES
 }
 
 pub trait MhyModule {

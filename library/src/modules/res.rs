@@ -1,12 +1,12 @@
-use crate::modules::{MhyContext, MhyModule, ModuleType};
+use crate::{marshal, modules::{MhyContext, MhyModule, ModuleType}};
 use anyhow::Result;
 use ilhook::x64::Registers;
 
-pub struct RSAEncrypt;
-impl MhyModule for MhyContext<RSAEncrypt> {
+pub struct RES;
+impl MhyModule for MhyContext<RES> {
     unsafe fn init(&mut self) -> Result<()> {
         if let Some(addr) = self.addr {
-            self.interceptor.replace(
+            self.interceptor.attach(
                 addr as usize,
                 hkaddr,
             )
@@ -16,13 +16,11 @@ impl MhyModule for MhyContext<RSAEncrypt> {
     }
 
     fn get_module_type(&self) -> super::ModuleType {
-        ModuleType::RSAEncrypt
+        ModuleType::RES
     }
 }
 
-pub unsafe extern "win64" fn hkaddr(
-    reg: *mut Registers, _: usize, _:usize
-) -> usize {
-    let content_ptr = (*reg).rdx;
-    content_ptr as usize
+pub unsafe extern "win64" fn hkaddr(reg: *mut Registers, _: usize) {
+    let path = marshal::read_il2cpp_str((*reg).rcx);
+    println!("Catch Path: {}", path);
 }

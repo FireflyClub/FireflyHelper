@@ -11,7 +11,7 @@ use windows::Win32::System::Console;
 use windows::Win32::System::SystemServices::DLL_PROCESS_ATTACH;
 
 #[allow(unused_imports)]
-use crate::modules::{MhyContext, ModuleManager, SetUrl, RSAEncrypt, Censorship};
+use crate::modules::{MhyContext, ModuleManager, SetUrl, RSAEncrypt, Censorship, RES};
 use crate::marshal::STRING_ADDR;
 
 mod util;
@@ -38,35 +38,40 @@ unsafe fn thread_func() {
     let mut module_manager = MODULE_MANAGER.write().unwrap();
 
     // PtrToStringAnsi
-    // void jmp to 55 41 57 41 56 41 54 56 57 53 48 83 EC 50 48 8D 6C 24 ? 48 C7 45 ? ? ? ? ? 48 89 C8
-    STRING_ADDR = Some((base_ga + 0x000D4500) as *mut u8);
+    // TODO
+    STRING_ADDR = Some((base_ga + 0x0D04CAB0) as *mut u8);
 
     // Enable InternalSetUrl
     // 56 57 48 83 EC 28 48 89 D6 48 89 CF 80 3D ? ? ? ? ? 74 ? 48 89 F9 FF 15 ? ? ? ? 84 C0 74 ? 48 89 F9 48 89 F2 FF 15 ? ? ? ? 85 C0 75 ? 48 83 C4 28 5F 5E C3 B9 12
-    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x070EAF30) as *mut u8)));
+    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x04E64B70) as *mut u8)));
 
     // Enable MakeInitialUrl
     // 55 41 56 56 57 53 48 83 EC 70 48 8D 6C 24 ? 48 C7 45 ? ? ? ? ? 48 89 D6 48 89 CF 80 3D ? ? ? ? ? 74
-    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x070EABD0) as *mut u8)));
+    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x04E64810) as *mut u8)));
     println!("SetUrl enabled!");
 
+    // Enable GameCoreConfigLoader
+    // module_manager.enable(MhyContext::<RES>::new(Some((base_ga + 0x0C742290) as *mut u8)));
+    // println!("GameCoreConfigLoader enabled!");
+
     // Disable RSAEncrypt
-    // 55 41 57 41 56 41 54 56 57 53 48 83 EC 50 48 8D 6C 24 ? 48 C7 45
-    // module_manager.enable(MhyContext::<RSAEncrypt>::new(Some((base_ga + 0x0632F250) as *mut u8)));
-    // println!("RSAEncrypt disabled!");
+    // 41 57 41 56 41 55 41 54 56 57 55 53 48 83 EC 78 49 89 D4 48 89 CE
+    module_manager.enable(MhyContext::<RSAEncrypt>::new(Some((base_ga + 0x0C9A7FA0) as *mut u8)));
+    module_manager.enable(MhyContext::<RSAEncrypt>::new(Some((base_ga + 0x0D0FDE20) as *mut u8)));
+    println!("RSAEncrypt disabled!");
 
     // Disable SetElevationDitherAlphaValue | SetDistanceDitherAlphaValue
     // 56 48 83 EC 30 0F 29 74 24 ? 0F 28 F1 48 89 CE 80 3D ? ? ? ? ? 75 ? 80 7E ? ? 74 ? 0F 57
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x08A1A310) as *mut u8)));
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x08A1A610) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x067242A0) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x067245A0) as *mut u8)));
 
     // Disable SetDitherAlphaValue
     // 56 57 48 83 EC 38 0F 29 74 24 ? 44 89 C6 0F 28 F1 48 89 CF 80 3D ? ? ? ? ? 75 ? 80
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x08A10510) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x0671A480) as *mut u8)));
 
     // Disable SetDitherAlphaValueWithAnimation
     // 56 57 55 53 48 83 EC 78 44 0F 29 44 24 ? 0F 29 7C 24 ? 0F 29 74 24 ? 44 0F 28 C3
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x08A0F410) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x06719380) as *mut u8)));
     println!("Censorship disabled!");
 
     println!("Successfully injected!");
