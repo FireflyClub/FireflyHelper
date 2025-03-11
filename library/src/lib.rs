@@ -38,13 +38,13 @@ unsafe fn thread_func() {
     let mut module_manager = MODULE_MANAGER.write().unwrap();
 
     // PtrToStringAnsi
-    STRING_ADDR = Some((base_ga + 0x0D22F130) as *mut u8);
+    STRING_ADDR = Some((base_ga + 0x0D63E6F0) as *mut u8);
 
     // Enable InternalSetUrl
     // module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x0DFA6CA0) as *mut u8)));
 
     // Enable MakeInitialUrl
-    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x0DFE8C00) as *mut u8)));
+    module_manager.enable(MhyContext::<SetUrl>::new(Some((base_ga + 0x056288F0) as *mut u8)));
     println!("SetUrl enabled!");
 
     // Enable GameCoreConfigLoader
@@ -57,16 +57,16 @@ unsafe fn thread_func() {
     println!("RSAEncrypt disabled!");
 
     // Disable SetElevationDitherAlphaValue
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x0667B940) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x06E47CD0) as *mut u8)));
 
     // SetDistanceDitherAlphaValue
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x0667BC20) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x06E47FB0) as *mut u8)));
 
     // Disable SetDitherAlphaValue
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x066719C0) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x06E3DD50) as *mut u8)));
 
     // Disable SetDitherAlphaValueWithAnimation
-    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x06670910) as *mut u8)));
+    module_manager.enable(MhyContext::<Censorship>::new(Some((base_ga + 0x06E3CCA0) as *mut u8)));
     println!("Censorship disabled!");
 
     println!("Successfully injected!");
